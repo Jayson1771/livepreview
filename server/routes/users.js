@@ -11,9 +11,7 @@ router.get("/me", authenticate, async (req, res) => {
 
   const { data, error } = await supabase
     .from("users")
-    .select(
-      "id, email, full_name, avatar_url, plan, plan_ends_at, api_token, created_at"
-    )
+    .select("id, email, full_name, avatar_url, plan, plan_ends_at, api_token, created_at")
     .eq("id", req.user.id)
     .single();
 
@@ -106,8 +104,7 @@ router.get("/cli-auth/poll/:code", async (req, res) => {
     .eq("token", req.params.code)
     .single();
 
-  if (!data)
-    return res.status(404).json({ error: "Code not found or expired" });
+  if (!data) return res.status(404).json({ error: "Code not found or expired" });
   if (!data.user_id) return res.json({ status: "pending" });
 
   // Get user's API token
@@ -126,31 +123,3 @@ router.get("/cli-auth/poll/:code", async (req, res) => {
 });
 
 module.exports = router;
-server / index.js;
-JS;
-Copy;
-require("dotenv").config();
-const express = require("express");
-const http = require("http");
-const WebSocket = require("ws");
-const helmet = require("helmet");
-const cors = require("cors");
-const { nanoid } = require("nanoid");
-
-const supabase = require("./config/supabase");
-const { apiLimiter } = require("./middleware/rateLimiter");
-
-const tunnelRoutes = require("./routes/tunnels");
-const billingRoutes = require("./routes/billing");
-const userRoutes = require("./routes/users");
-
-const app = express();
-const server = http.createServer(app);
-
-// ─── ACTIVE STATE MAPS ────────────────────────────────────────────
-// tunnelId → WebSocket (CLI connection)
-const activeTunnels = new Map();
-// requestId → { res, timer }
-const pendingRequests = new Map();
-
-app.locals.activeTunnels = activeTunnels;
