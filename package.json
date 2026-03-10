@@ -2,31 +2,6 @@
   "name": "livepreview",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server/index.js",
-    "build": "cd server && npm install"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  }
-}
-
-
-VITE_SUPABASE_URL https://psqtzamyddruxohocpaf.supabase.co
-
-VITE_SUPABASE_ANON_KEY eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzcXR6YW15ZGRydXhvaG9jcGFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDk2OTksImV4cCI6MjA4ODI4NTY5OX0.mSNA9MFMMDWz-tR2IICdsAI2xp3eXWzwDA8337y4eI0
-
-VITE_API_URL  https://livepreview.onrender.com/api
-
-VITE_TUNNEL_DOMAIN https://livepreview.onrender.com
-
-
-
-
-
-{
-  "name": "livepreview",
-  "version": "1.0.0",
-  "scripts": {
     "build": "cd dashboard && npm install && npx vite build"
   }
 }
