@@ -1,8 +1,0 @@
-{
-  "outputDirectory": "dashboard/dist",
-  "buildCommand": "cd dashboard && npm install && npx vite build",
-  "installCommand": "echo done",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}

@@ -1,7 +1,0 @@
-{
-  "name": "livepreview",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "cd dashboard && npm install && npx vite build"
-  }
-}
