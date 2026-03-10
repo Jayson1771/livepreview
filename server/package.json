@@ -1,11 +1,11 @@
 {
   "name": "livepreview-server",
   "version": "1.0.0",
-  "description": "Tunnel server for LivePreview",
+  "description": "LivePreview Tunnel Server",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "build": "npm install"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.38.0",
@@ -19,7 +19,7 @@
     "stripe": "^14.5.0",
     "ws": "^8.14.2"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
