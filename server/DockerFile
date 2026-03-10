@@ -1,0 +1,23 @@
+PORT=3001
+NODE_ENV=development
+
+# Supabase
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_KEY=your-service-role-key-here
+
+# Tunnel domain (set up wildcard DNS: *.preview.yourdomain.com → this server)
+TUNNEL_DOMAIN=preview.yourdomain.com
+
+# Stripe
+STRIPE_SECRET_KEY=sk_live_xxxxx
+STRIPE_WEBHOOK_SECRET=whsec_xxxxx
+STRIPE_PRO_PRICE_ID=price_xxxxx
+
+# Email (Resend)
+RESEND_API_KEY=re_xxxxx
+EMAIL_FROM=noreply@yourdomain.com
+
+# Security
+JWT_SECRET=change-this-to-a-long-random-string
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX=100
