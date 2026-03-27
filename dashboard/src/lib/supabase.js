@@ -6,7 +6,7 @@ export const supabase = createClient(
 );
 
 export const API =
-  import.meta.env.VITE_API_URL || "https://livepreview-git-main-jays-projects-91d74f42.vercel.app/";
+  import.meta.env.VITE_API_URL || "livepreview.onrender.com/api";
 
 export async function apiFetch(path, options = {}) {
   const token = localStorage.getItem("lp_token");
