@@ -1,55 +1,66 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase, apiFetch } from "../lib/supabase";
+import { supabase } from "../lib/supabase";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
+
+  async function fetchProfile() {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        setProfile(null);
+        return;
+      }
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL || ""}/api/users/me`,
+        {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        }
+      );
+      const data = await res.json();
+      const prof = data.user || data;
+
+      if (prof?.api_token) localStorage.setItem("lp_token", prof.api_token);
+      setProfile(prof);
+    } catch (err) {
+      console.error("Profile fetch error:", err);
+      setProfile({});
+    }
+  }
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    async function init() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
-      if (session?.user) fetchProfile();
-      else setLoading(false);
-    });
+      if (session?.user) {
+        await fetchProfile();
+      }
+      setInitialized(true);
+    }
+    init();
 
-    // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) await fetchProfile();
-      else {
+      if (session?.user) {
+        await fetchProfile();
+      } else {
         setProfile(null);
-        setLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
-
-  async function fetchProfile() {
-    // Get API token from server using Supabase JWT
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session) return;
-
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL || ""}/api/users/me`,
-      {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      }
-    );
-    const { user: prof } = await res.json();
-
-    if (prof?.api_token) localStorage.setItem("lp_token", prof.api_token);
-    setProfile(prof);
-    setLoading(false);
-  }
 
   async function signInWithGitHub() {
     await supabase.auth.signInWithOAuth({
@@ -59,7 +70,12 @@ export function AuthProvider({ children }) {
   }
 
   async function signInWithEmail(email, password) {
-    return supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (data?.user && !error) {
+      setUser(data.user);
+      await fetchProfile();
+    }
+    return { error };
   }
 
   async function signUpWithEmail(email, password, fullName) {
@@ -72,8 +88,9 @@ export function AuthProvider({ children }) {
 
   async function signOut() {
     localStorage.removeItem("lp_token");
-    await supabase.auth.signOut();
+    setUser(null);
     setProfile(null);
+    await supabase.auth.signOut();
   }
 
   return (
@@ -81,7 +98,7 @@ export function AuthProvider({ children }) {
       value={{
         user,
         profile,
-        loading,
+        initialized,
         signInWithGitHub,
         signInWithEmail,
         signUpWithEmail,
