@@ -9,10 +9,26 @@ export const C = {
   text3: "#6b7280",
   accent: "#6366f1",
   accent2: "#8b5cf6",
+  purple: "#8b5cf6",
   green: "#22c55e",
   yellow: "#f59e0b",
   red: "#ef4444",
 };
+
+export function inp() {
+  return {
+    background: "#060709",
+    border: "1px solid #1e2130",
+    borderRadius: 8,
+    padding: "11px 14px",
+    color: "#e5e7eb",
+    fontSize: 14,
+    width: "100%",
+    outline: "none",
+    boxSizing: "border-box",
+    fontFamily: "'Syne', sans-serif",
+  };
+}
 
 export const METHOD_COLOR = {
   GET: "#22c55e",

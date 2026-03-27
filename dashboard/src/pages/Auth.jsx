@@ -9,7 +9,7 @@ export default function AuthPage() {
   const [email, setEmail]     = useState("");
   const [password, setPassword] = useState("");
   const [name, setName]       = useState("");
-  const [error, setError]     = useState<string | null>(null);
+  const [error, setError]     = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
