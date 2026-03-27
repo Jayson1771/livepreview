@@ -12,10 +12,10 @@ deploy-dashboard:
         npm ci
         npm run build
       env:
-        VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-        VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-        VITE_API_URL: ${{ secrets.VITE_API_URL }}
-        VITE_TUNNEL_DOMAIN: ${{ secrets.VITE_TUNNEL_DOMAIN }}
+        VITE_SUPABASE_URL: ${{ secrets.https://psqtzamyddruxohocpaf.supabase.co }}
+        VITE_SUPABASE_ANON_KEY: ${{ secrets.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzcXR6YW15ZGRydXhvaG9jcGFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDk2OTksImV4cCI6MjA4ODI4NTY5OX0.mSNA9MFMMDWz-tR2IICdsAI2xp3eXWzwDA8337y4eI0 }}
+        VITE_API_URL: ${{ secrets.livepreview.onrender.com }}
+        VITE_TUNNEL_DOMAIN: ${{ secrets.livepreview.onrender.com/api }}
 
     - name: Upload dist to VPS
       uses: appleboy/scp-action@v0.1.7
