@@ -11,6 +11,7 @@ import Layout from "./components/layout";
 
 function ProtectedRoute({ children }) {
   const { user, initialized } = useAuth();
+  
   if (!initialized) {
     return (
       <div style={{ minHeight: "100vh", background: "#080a0f", display: "flex", alignItems: "center", justifyContent: "center", color: "#6b7280", fontFamily: "system-ui" }}>
@@ -18,21 +19,12 @@ function ProtectedRoute({ children }) {
       </div>
     );
   }
-  if (!user) return <Navigate to="/auth" replace />;
+  
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+  
   return <Layout>{children}</Layout>;
-}
-
-function PublicRoute({ children }) {
-  const { user, initialized } = useAuth();
-  if (!initialized) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#080a0f", display: "flex", alignItems: "center", justifyContent: "center", color: "#6b7280", fontFamily: "system-ui" }}>
-        Loading...
-      </div>
-    );
-  }
-  if (user) return <Navigate to="/dashboard" replace />;
-  return children;
 }
 
 export default function App() {
@@ -41,7 +33,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/auth" element={<PublicRoute><AuthPage /></PublicRoute>} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><Overview /></ProtectedRoute>} />
           <Route path="/dashboard/tunnels" element={<ProtectedRoute><Tunnels /></ProtectedRoute>} />
           <Route path="/dashboard/logs" element={<ProtectedRoute><Logs /></ProtectedRoute>} />

@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { C, inp } from "../lib/theme";
 
 export default function AuthPage() {
   const [params]   = useSearchParams();
+  const navigate = useNavigate();
+  const { user, signInWithGitHub, signInWithEmail, signUpWithEmail } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, navigate]);
+
   const [mode, setMode]       = useState(params.get("mode") === "signup" ? "signup" : "login");
   const [email, setEmail]     = useState("");
   const [password, setPassword] = useState("");
@@ -13,18 +22,10 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const { user, signInWithGitHub, signInWithEmail, signUpWithEmail } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/dashboard", { replace: true });
-    }
-  }, [user, navigate]);
-
   async function handleSubmit() {
     setError(null);
     setLoading(true);
+    
     try {
       if (mode === "login") {
         const { error: err } = await signInWithEmail(email, password);
@@ -42,6 +43,7 @@ export default function AuthPage() {
     } catch (err) {
       setError("Something went wrong. Please try again.");
     }
+    
     setLoading(false);
   }
 
